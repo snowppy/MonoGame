@@ -202,6 +202,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
             Texture2D texture = new Texture2D(graphicsDevice, bitmap.PixelWidth, bitmap.PixelHeight);
             texture.SetData<int>(bitmap.Pixels);
+            bitmap.Dispose();
             return texture;
 #endif
 #if !WINDOWS_PHONE
@@ -363,12 +364,15 @@ namespace Microsoft.Xna.Framework.Graphics
                 );
 
             var fconv = new FormatConverter(imgfactory);
-
+            var tFrame = decoder.GetFrame(0);
             fconv.Initialize(
-                decoder.GetFrame(0),
+                tFrame,
                 PixelFormat.Format32bppRGBA,
                 BitmapDitherType.None, null,
                 0.0, BitmapPaletteType.Custom);
+
+            tFrame.Dispose();
+            tFrame = null;
 
             return fconv;
         }
